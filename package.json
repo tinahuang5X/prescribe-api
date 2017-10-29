@@ -18,12 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tinahuang5X/prescribe-API.git"
+    "url": "git+https://github.com/tinahuang5X/prescribe-api.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tinahuang5X/prescribe-API/issues"
+    "url": "https://github.com/tinahuang5X/prescribe-api/issues"
   },
-  "homepage": "https://github.com/tinahuang5X/prescribe-API#readme"
+  "homepage": "https://github.com/tinahuang5X/prescribe-api#readme"
 }
