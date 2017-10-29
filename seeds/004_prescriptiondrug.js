@@ -1,0 +1,31 @@
+exports.seed = function(knex) {
+  // Deletes ALL existing entries
+
+  return knex('prescriptiondrug')
+    .del()
+    .then(function() {
+      // Inserts seed entries
+      return knex('prescriptiondrug').insert([
+        {
+          id: 1,
+          drugId: 1,
+          dosage: '10 mg once daily'
+        },
+        {
+          id: 2,
+          drugId: 1,
+          dosage: '20 mg once daily'
+        },
+        {
+          id: 3,
+          drugId: 2,
+          dosage: '50 mcg once daily'
+        }
+      ]);
+    })
+    .then(() =>
+      knex.raw(
+        "SELECT setval('prescriptiondrug_id_seq', (SELECT MAX(id) FROM prescriptiondrug))"
+      )
+    );
+};
