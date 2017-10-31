@@ -1,5 +1,5 @@
 exports.up = function(knex) {
-  return knex.schema.createTable('doctor', table => {
+  return knex.schema.createTable('Doctor', table => {
     table.increments('id').primary();
     table.string('firstName').notNullable().defaultTo('');
     table.string('lastName').notNullable().defaultTo('');
@@ -12,5 +12,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('doctor');
+  return knex.schema.dropTable('Doctor');
 };

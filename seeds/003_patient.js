@@ -1,11 +1,11 @@
 exports.seed = function(knex) {
   // Deletes ALL existing entries
 
-  return knex('patient')
+  return knex('Patient')
     .del()
     .then(function() {
       // Inserts seed entries
-      return knex('patient').insert([
+      return knex('Patient').insert([
         {
           id: 1,
           doctorId: 1,
@@ -39,6 +39,8 @@ exports.seed = function(knex) {
       ]);
     })
     .then(() =>
-      knex.raw("SELECT setval('patient_id_seq', (SELECT MAX(id) FROM patient))")
+      knex.raw(
+        `SELECT setval('"Patient_id_seq"', (SELECT MAX("id") FROM "Patient"))`
+      )
     );
 };

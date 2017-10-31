@@ -1,0 +1,46 @@
+CREATE TABLE "Doctor" (
+  id SERIAL PRIMARY KEY,
+  firstName STRING NOT NULL,
+  lastName STRING NOT NULL,
+  email STRING NOT NULL UNIQUE,
+  hashedPassword VARCHAR (60) NOT NULL,
+  "createdAt" TIMESTAMP NOT NULL,
+  "updatedAt" TIMESTAMP NOT NULL
+);
+
+CREATE TABLE "Drug" (
+  id SERIAL PRIMARY KEY,
+  generic STRING NOT NULL,
+  brand STRING NOT NULL,
+  indications STRING NOT NULL,
+  "doctorId" INTEGER NOT NULL REFERENCES "Doctor" (id) ON DELETE CASCADE,
+  "createdAt" TIMESTAMP NOT NULL,
+  "updatedAt" TIMESTAMP NOT NULL
+);
+
+CREATE TABLE "Patient" (
+  id SERIAL PRIMARY KEY,
+  name STRING NOT NULL,
+  dob STRING NOT NULL,
+  "doctorId" INTEGER NOT NULL REFERENCES "Doctor" (id) ON DELETE CASCADE,
+  "createdAt" TIMESTAMP NOT NULL,
+  "updatedAt" TIMESTAMP NOT NULL
+);
+
+CREATE TABLE "Prescriptiondrug" (
+  id SERIAL PRIMARY KEY,
+  "drugId" INTEGER NOT NULL REFERENCES "Drug" (id) ON DELETE CASCADE,
+  dosage STRING NOT NULL,
+  "createdAt" TIMESTAMP NOT NULL,
+  "updatedAt" TIMESTAMP NOT NULL
+);
+
+CREATE TABLE "Prescription" (
+  id SERIAL PRIMARY KEY,
+  "date" STRING NOT NULL,
+  "prescriptiondrugId" INTEGER NOT NULL REFERENCES "Prescriptiondrug" (id) ON DELETE CASCADE,
+  "patientId" INTEGER NOT NULL REFERENCES "Patient" (id) ON DELETE CASCADE,
+  "doctorId" INTEGER NOT NULL REFERENCES "Doctor" (id) ON DELETE CASCADE,
+  "createdAt" TIMESTAMP NOT NULL,
+  "updatedAt" TIMESTAMP NOT NULL
+);

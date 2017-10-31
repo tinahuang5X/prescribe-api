@@ -1,9 +1,15 @@
 exports.up = function(knex) {
-  return knex.schema.createTable('prescriptiondrug', table => {
+  return knex.schema.createTable('Prescriptiondrug', table => {
     table.increments('id').primary();
 
     table.integer('drugId').unsigned().notNullable();
-    table.foreign('drugId').references('drug.id').onDelete('CASCADE');
+    table.foreign('drugId').references('Drug.id').onDelete('CASCADE');
+
+    table.integer('prescriptionId').unsigned().notNullable();
+    table
+      .foreign('prescriptionId')
+      .references('Prescription.id')
+      .onDelete('CASCADE');
 
     table.string('dosage').notNullable().defaultTo('');
 
@@ -13,5 +19,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('prescriptiondrug');
+  return knex.schema.dropTable('Prescriptiondrug');
 };
