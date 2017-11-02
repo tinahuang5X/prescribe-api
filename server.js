@@ -10,6 +10,7 @@ app.disable('x-powered-by');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const cors = require('cors');
 
 switch (process.env.NODE_ENV) {
   case 'development':
@@ -23,28 +24,29 @@ switch (process.env.NODE_ENV) {
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 
 const path = require('path');
 
 app.use(express.static(path.join('public')));
 
 // CSRF protection
-app.use((request, response, next) => {
-  if (/json/.test(request.get('Accept'))) {
-    next();
-    return;
-  }
-  response.sendStatus(406);
-});
+// app.use((request, response, next) => {
+//   if (/json/.test(request.get('Accept'))) {
+//     next();
+//     return;
+//   }
+//   response.sendStatus(406);
+// });
 
 const drugs = require('./routes/drugs');
 //const patients = require('./routes/patients');
-//const token = require('./routes/token');
+const token = require('./routes/token');
 const doctors = require('./routes/doctors');
 
 app.use(drugs);
 //app.use(patients);
-//app.use(token);
+app.use(token);
 app.use(doctors);
 
 app.use((request, response) => {

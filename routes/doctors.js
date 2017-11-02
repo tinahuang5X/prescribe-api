@@ -8,6 +8,41 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const env = require('./../env');
 
+router.get('/doctors', (req, res, next) => {
+  knex('Doctor')
+    .orderBy('lastName')
+    .then(doctors => {
+      //console.log('to see the drugs', drugs);
+      res.json(doctors);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+router.get('/doctors/:id', (req, res, next) => {
+  let id = req.params.id;
+  if (id <= 0 || id >= 1000 || isNaN(id)) {
+    res.set('Content-Type', 'text/plain');
+    res.status(404).send('Not Found');
+  } else {
+    knex('Doctor')
+      .where('id', req.params.id)
+      .first()
+      .then(doctor => {
+        if (!doctor) {
+          res.set('Content-Type', 'text/plain');
+          res.status(404).send('Doctor Not Found');
+        }
+
+        res.json(doctor);
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
+});
+
 router.post('/doctors', (req, res, next) => {
   if (!req.body.email) {
     res.set('Content-Type', 'text/plain');
@@ -19,12 +54,12 @@ router.post('/doctors', (req, res, next) => {
     res.status(400).send('Password must be at least 8 characters long');
     return;
   } else {
-    knex('doctors').where('email', req.body.email).then(record => {
+    knex('Doctor').where('email', req.body.email).then(record => {
       if (record) {
         bcrypt
           .hash(req.body.password, 12)
           .then(hashedPassword => {
-            return knex('doctors').insert(
+            return knex('Doctor').insert(
               {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
@@ -35,6 +70,7 @@ router.post('/doctors', (req, res, next) => {
             );
           })
           .then(doctors => {
+            //console.log(doctors);
             const doctor = doctors[0];
             let token = jwt.sign(
               {

@@ -184,116 +184,100 @@ suite(
         .expect(400, 'Indications must not be blank', done);
     });
 
+    //PATCH
+
+    test('PATCH /drugs/:id', done => {
+      request(server)
+        .patch('/drugs/1')
+        .set('Accept', 'application/json')
+        .send({
+          generic: 'acetaminophen and hydrocodone',
+          brand: 'Vicodin',
+          indications: 'pain'
+        })
+        .expect('Content-Type', /json/)
+        .expect(res => {
+          delete res.body.createdAt;
+          delete res.body.updatedAt;
+        })
+        .expect(200, {
+          id: 1,
+          generic: 'acetaminophen and hydrocodone',
+          brand: 'Vicodin',
+          indications: 'pain'
+        })
+        .expect('Content-Type', /json/);
+      done();
+    });
+
+    test('PATCH /drugs/9000', done => {
+      request(server)
+        .patch('/drugs/9000')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /plain/)
+        .expect(404, 'Not Found', done);
+    });
+
+    test('PATCH /drugs/-1', done => {
+      request(server)
+        .patch('/drugs/-1')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /plain/)
+        .expect(404, 'Not Found', done);
+    });
+
+    test('PATCH /drugs/one', done => {
+      request(server)
+        .patch('/drugs/one')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /plain/)
+        .expect(404, 'Not Found', done);
+    });
+
     //
-    // PATCH
+    // DELETE
     //
 
-    // test('PATCH /drugs/:id', done => {
-    //   request(server)
-    //     .patch('/drugs/1')
-    //     .set('Accept', 'application/json')
-    //     .send({
-    //       title: 'Think like Python',
-    //       author: 'Allen B. Downey',
-    //       genre: 'Python stuff',
-    //       description: 'More Python',
-    //       coverUrl:
-    //         'https://s3-us-west-2.amazonaws.com/assessment-images/galvanize_reads/photos/think_python.jpg'
-    //     })
-    //     .expect('Content-Type', /json/)
-    //     .expect(res => {
-    //       delete res.body.createdAt;
-    //       delete res.body.updatedAt;
-    //     })
-    //     .expect(
-    //       200,
-    //       {
-    //         id: 1,
-    //         title: 'Think like Python',
-    //         author: 'Allen B. Downey',
-    //         genre: 'Python stuff',
-    //         description: 'More Python',
-    //         coverUrl:
-    //           'https://s3-us-west-2.amazonaws.com/assessment-images/galvanize_reads/photos/think_python.jpg'
-    //       },
-    //       done
-    //     );
-    // });
-    //
-    // test('PATCH /drugs/9000', done => {
-    //   request(server)
-    //     .patch('/drugs/9000')
-    //     .set('Accept', 'application/json')
-    //     .expect('Content-Type', /plain/)
-    //     .expect(404, 'Not Found', done);
-    // });
-    //
-    // test('PATCH /drugs/-1', done => {
-    //   request(server)
-    //     .patch('/drugs/-1')
-    //     .set('Accept', 'application/json')
-    //     .expect('Content-Type', /plain/)
-    //     .expect(404, 'Not Found', done);
-    // });
-    //
-    // test('PATCH /drugs/one', done => {
-    //   request(server)
-    //     .patch('/drugs/one')
-    //     .set('Accept', 'application/json')
-    //     .expect('Content-Type', /plain/)
-    //     .expect(404, 'Not Found', done);
-    // });
-    //
-    // //
-    // // DELETE
-    // //
-    //
-    // test('DELETE /drugs/:id', done => {
-    //   request(server)
-    //     .del('/drugs/1')
-    //     .set('Accept', 'application/json')
-    //     .expect('Content-Type', /json/)
-    //     .expect(res => {
-    //       delete res.body.createdAt;
-    //       delete res.body.updatedAt;
-    //     })
-    //     .expect(
-    //       200,
-    //       {
-    //         title: 'JavaScript, The Good Parts',
-    //         author: 'Douglas Crockford',
-    //         genre: 'JavaScript',
-    //         description:
-    //           "Most programming languages contain good and bad parts, but JavaScript has more than its share of the bad, having been developed and released in a hurry before it could be refined. This authoritative drug scrapes away these bad features to reveal a subset of JavaScript that's more reliable, readable, and maintainable than the language as a whole—a subset you can use to create truly extensible and efficient code.",
-    //         coverUrl:
-    //           'https://students-gschool-production.s3.amazonaws.com/uploads/asset/file/284/javascript_the_good_parts.jpg'
-    //       },
-    //       done
-    //     );
-    // });
-    //
-    // test('DELETE /drugs/9000', done => {
-    //   request(server)
-    //     .del('/drugs/9000')
-    //     .set('Accept', 'application/json')
-    //     .expect('Content-Type', /plain/)
-    //     .expect(404, 'Not Found', done);
-    // });
-    //
-    // test('DELETE /drugs/-1', done => {
-    //   request(server)
-    //     .del('/drugs/-1')
-    //     .set('Accept', 'application/json')
-    //     .expect('Content-Type', /plain/)
-    //     .expect(404, 'Not Found', done);
-    // });
-    //
-    // test('DELETE /drugs/one', done => {
-    //   request(server)
-    //     .del('/drugs/one')
-    //     .set('Accept', 'application/json')
-    //     .expect('Content-Type', /plain/)
-    //     .expect(404, 'Not Found', done);
-    // });
+    test('DELETE /drugs/:id', done => {
+      request(server)
+        .del('/drugs/1')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(res => {
+          delete res.body.createdAt;
+          delete res.body.updatedAt;
+        })
+        .expect(200, {
+          generic: 'Atorvastatin',
+          brand: 'Liptor',
+          indications: 'lower cholesterol'
+        })
+        .expect('Content-Type', /json/);
+      done();
+    });
+
+    test('DELETE /drugs/9000', done => {
+      request(server)
+        .del('/drugs/9000')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /plain/)
+        .expect(404, 'Not Found', done);
+    });
+
+    test('DELETE /drugs/-1', done => {
+      request(server)
+        .del('/drugs/-1')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /plain/)
+        .expect(404, 'Not Found', done);
+    });
+
+    test('DELETE /drugs/one', done => {
+      request(server)
+        .del('/drugs/one')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /plain/)
+        .expect(404, 'Not Found', done);
+    });
   })
 );

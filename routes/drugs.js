@@ -4,10 +4,10 @@ const router = express.Router();
 const knex = require('../knex');
 
 router.get('/doctors/:doctorId/drugs', (req, res, next) => {
-  knex('drugs')
+  knex('Drug')
     .orderBy('generic')
     .then(drugs => {
-      //console.log('to see the body', res);
+      //console.log('to see the drugs', drugs);
       res.json(drugs);
     })
     .catch(err => {
@@ -21,16 +21,13 @@ router.get('/doctors/:doctorId/drugs/:id', (req, res, next) => {
     res.set('Content-Type', 'text/plain');
     res.status(404).send('Not Found');
   } else {
-    knex('drugs')
+    knex('Drug')
       .where('id', req.params.id)
       .first()
       .then(drug => {
         if (!drug) {
-          const err = new Error('Not Found');
-
-          err.status = 404;
-
-          throw err;
+          res.set('Content-Type', 'text/plain');
+          res.status(404).send('Drug Not Found');
         }
 
         res.json(drug);
@@ -42,6 +39,7 @@ router.get('/doctors/:doctorId/drugs/:id', (req, res, next) => {
 });
 
 router.post('/doctors/:doctorId/drugs', (req, res, next) => {
+  //console.log('hi');
   if (!req.body.generic) {
     res.set('Content-Type', 'text/plain');
     res.status(400).send('Generic must not be blank');
@@ -52,12 +50,13 @@ router.post('/doctors/:doctorId/drugs', (req, res, next) => {
     res.set('Content-Type', 'text/plain');
     res.status(400).send('Indications must not be blank');
   } else {
-    knex('drugs')
+    knex('Drug')
       .insert(
         {
+          doctorId: req.params.doctorId,
           generic: req.body.generic,
           brand: req.body.brand,
-          indications: req.body.indicatons
+          indications: req.body.indications
         },
         '*'
       )
@@ -66,6 +65,7 @@ router.post('/doctors/:doctorId/drugs', (req, res, next) => {
         res.json(drugs[0]);
       })
       .catch(err => {
+        //console.log('this is the err', err);
         next(err);
       });
   }
@@ -77,20 +77,21 @@ router.patch('/drugs/:id', (req, res, next) => {
     res.set('Content-Type', 'text/plain');
     res.status(404).send('Not Found');
   } else {
-    knex('drugs')
+    knex('Drug')
       .where('id', req.params.id)
       .first()
+      // .then(drug => {
+      //   if (!drug) {
+      //     return next();
+      //   }
       .then(drug => {
-        if (!drug) {
-          return next();
-        }
-
-        return knex('drugs')
+        return knex('Drug')
           .update(
             {
+              doctorId: req.params.doctorId,
               generic: req.body.generic,
               brand: req.body.brand,
-              indications: req.body.indicatons
+              indications: req.body.indications
             },
             '*'
           )
@@ -112,7 +113,7 @@ router.delete('/drugs/:id', (req, res, next) => {
     res.status(404).send('Not Found');
   } else {
     let drug;
-    knex('drugs')
+    knex('Drug')
       .where('id', req.params.id)
       .first()
       .then(row => {
@@ -122,7 +123,7 @@ router.delete('/drugs/:id', (req, res, next) => {
 
         drug = row;
 
-        return knex('drugs').del().where('id', req.params.id);
+        return knex('Drug').del().where('id', req.params.id);
       })
       .then(() => {
         delete drug.id;
