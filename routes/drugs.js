@@ -4,15 +4,17 @@ const router = express.Router();
 const knex = require('../knex');
 const jwt = require('jsonwebtoken');
 
-// router.use('/favorites', (req, res, next) => {
-//   let decode = jwt.decode(req.cookies.token);
-//   if (!decode) {
-//     res.set('Content-Type', 'text/plain');
-//     res.status(401).send('Unauthorized');
-//   } else {
-//     next();
-//   }
-// });
+router.get('/doctors/:doctorId/drugs', (req, res, next) => {
+  let storedToken = req.headers.authorization;
+  let decodedToken = jwt.decode(storedToken);
+  //console.log(storedToken, decodedToken);
+  if (!decodedToken) {
+    res.set('Content-Type', 'text/plain');
+    res.status(401).send('Unauthorized');
+  } else {
+    next();
+  }
+});
 
 // router.get('/doctors/:doctorId/drugs', (req, res, next) => {
 //   let storedToken = req.headers.authorization;
@@ -37,6 +39,7 @@ const jwt = require('jsonwebtoken');
 //         next(err);
 //       });
 //   }
+// });
 router.get('/doctors/:doctorId/drugs', (req, res, next) => {
   knex('Drug')
     .orderBy('generic')
