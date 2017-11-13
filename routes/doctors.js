@@ -49,7 +49,7 @@ router.post('/doctors', (req, res, next) => {
     res.status(400).send('Email must not be blank');
     return;
   }
-  if (!req.body.password) {
+  if (req.body.password.length < 8) {
     res.set('Content-Type', 'text/plain');
     res.status(400).send('Password must be at least 8 characters long');
     return;

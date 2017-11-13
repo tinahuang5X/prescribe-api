@@ -8,11 +8,27 @@ router.get('/doctors/:doctorId/drugs', (req, res, next) => {
   let storedToken = req.headers.authorization;
   let decodedToken = jwt.decode(storedToken);
   //console.log(storedToken, decodedToken);
-  if (!decodedToken) {
+  let theDoctorId = decodedToken.id;
+  //console.log(theDoctorId);
+  if (!storedToken) {
     res.set('Content-Type', 'text/plain');
     res.status(401).send('Unauthorized');
+    return;
   } else {
-    next();
+    knex('Drug')
+      .where('doctorId', theDoctorId)
+      .first()
+      .then(drugs => {
+        if (!drugs) {
+          res.set('Content-Type', 'text/plain');
+          res.status(404).send('Drug Not Found');
+        }
+        //console.log(drugs);
+        res.json(drugs);
+      })
+      .catch(err => {
+        next(err);
+      });
   }
 });
 
@@ -40,44 +56,24 @@ router.get('/doctors/:doctorId/drugs', (req, res, next) => {
 //       });
 //   }
 // });
-router.get('/doctors/:doctorId/drugs', (req, res, next) => {
-  knex('Drug')
-    .orderBy('generic')
-    .then(drugs => {
-      //console.log('to see the drugs', drugs);
-      res.json(drugs);
-    })
-    .catch(err => {
-      next(err);
-    });
-});
-
-// else {
+// router.get('/doctors/:doctorId/drugs', (req, res, next) => {
 //   knex('Drug')
 //     .orderBy('generic')
 //     .then(drugs => {
 //       //console.log('to see the drugs', drugs);
-//       let filteredDrugs = drugs.filter(drug => {
-//         drug.doctorId === parseInt(req.url.split('/')[2]);
-//         console.log(drug);
-//         return drug;
-//       });
-//       //console.log(drug.doctorId, parseInt(req.url.split('/')[2]));
-//
-//       console.log(filteredDrugs);
-//       //console.log(drugs, drugs[0].doctorId, parseInt(req.url.split('/')[2]));
-//       res.json(filteredDrugs);
+//       res.json(drugs);
 //     })
 //     .catch(err => {
 //       next(err);
 //     });
-// }
+// });
 
 router.get('/doctors/:doctorId/drugs/:id', (req, res, next) => {
   let storedToken = req.headers.authorization;
   let decodedToken = jwt.decode(storedToken);
+  let theDoctorId = decodedToken.id;
   //console.log(storedToken);
-  if (!decodedToken) {
+  if (!storedToken) {
     res.set('Content-Type', 'text/plain');
     res.status(401).send('Unauthorized');
   } else {
@@ -87,7 +83,7 @@ router.get('/doctors/:doctorId/drugs/:id', (req, res, next) => {
       res.status(404).send('Not Found');
     } else {
       knex('Drug')
-        .where('doctorId', parseInt(req.url.split('/')[2]))
+        .where('doctorId', theDoctorId)
         .first()
         .then(drug => {
           if (!drug) {
