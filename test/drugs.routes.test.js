@@ -7,6 +7,7 @@ const request = require('supertest');
 // const knex = require('../knex');
 const server = require('../server');
 const { addDatabaseHooks } = require('./utils');
+
 suite(
   'drugs routes',
   addDatabaseHooks(() => {
@@ -120,10 +121,30 @@ suite(
     // POST
     //
 
+    let storedToken = '';
+
+    beforeEach(done => {
+      request(server)
+        .post('/token')
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .send({
+          email: 'tinahuang@gmail.com',
+          password: 'youreawizard'
+        })
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          var result = JSON.parse(res.text);
+          storedToken = result.token;
+          done();
+        });
+    });
+
     test('POST /doctors/:doctorId/drugs', done => {
       request(server)
         .post('/doctors/1/drugs')
-        .set('Accept', 'application/json')
         .send({
           generic: 'azithromycin',
           brand: 'Zithromax',
@@ -149,6 +170,7 @@ suite(
       request(server)
         .post('/doctors/1/drugs')
         .set('Accept', 'application/json')
+        .set('Authorization', storedToken)
         .send({
           doctorId: 1,
           brand: 'Zithromax',
@@ -162,6 +184,7 @@ suite(
       request(server)
         .post('/doctors/1/drugs')
         .set('Accept', 'application/json')
+        .set('Authorization', storedToken)
         .send({
           doctorId: 1,
           generic: 'omeprazole',
@@ -175,6 +198,7 @@ suite(
       request(server)
         .post('/doctors/1/drugs')
         .set('Accept', 'application/json')
+        .set('Authorization', storedToken)
         .send({
           doctorId: 1,
           generic: 'omeprazole',

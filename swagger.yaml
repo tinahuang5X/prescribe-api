@@ -1,0 +1,84 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Q3 Project:RESTful "CRUD" API with Express and Knex
+
+host: localhost:3000/#/
+
+basePath: /api/v1
+
+schemes:
+
+  - http
+  - https
+
+consumes:
+  - application/json
+
+produces:
+  - application/json
+  - text/plain
+paths:
+  /:
+
+    x-swagger-router-controller: drugs
+    get:
+      summary: get all prescription drugs
+      description: This endpoint returns all drugs belong to the specific doctor in the database.
+
+
+      operationId: getAll
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "/doctors/:doctorId/drugs"
+        default:
+          description: Error
+          schema:
+            $ref: "/doctors/:doctorId/drugs"
+
+    post:
+      summary: Add a new drug to the database
+      description: Add a new drug
+      operationId: create
+
+      parameters:
+        - name: drug
+          in: body
+          description: drug object
+          required: true
+          schema:
+            $ref: "/doctors/:doctorId/drugs"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "/doctors/:doctorId/drugs"
+        default:
+          description: Error
+          schema:
+            $ref: "/doctors/:doctorId/drugs"
+
+  drugs/{itemId}:
+
+    x-swagger-router-controller: drugs
+    get:
+      summary: Get a specific drug from our database.
+      description: Retrieve a single drug by id
+      operationId: getOne
+
+      parameters:
+        - name: itemId
+          type: integer
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "/doctors/:doctorId/drugs/:id"
+        default:
+          description: Error
+          schema:
+            $ref: "/doctors/:doctorId/drugs/:id"

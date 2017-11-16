@@ -7,20 +7,20 @@ const bcrypt = require('bcryptjs');
 const env = require('./../env');
 const jwt = require('jsonwebtoken');
 
-router.get('/token', (req, res, next) => {
-  //console.log('hi', req, env.JWT_KEY);
-  if (req.cookies.token) {
-    jwt.verify(req.cookies.token, env.JWT_KEY, (err, response) => {
-      if (response) res.status(200).json(true);
-      else {
-        res.status(200).json(false);
-      }
-    });
-  } else {
-    //console.log(req.cookies.token);
-    res.status(200).json(false);
-  }
-});
+// router.get('/token', (req, res, next) => {
+//   //console.log('hi', req, env.JWT_KEY);
+//   if (req.cookies.token) {
+//     jwt.verify(req.cookies.token, env.JWT_KEY, (err, response) => {
+//       if (response) res.status(200).json(true);
+//       else {
+//         res.status(200).json(false);
+//       }
+//     });
+//   } else {
+//     //console.log(req.cookies.token);
+//     res.status(200).json(false);
+//   }
+// });
 
 router.post('/token', (req, res) => {
   if (!req.body.email) {
