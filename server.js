@@ -53,16 +53,6 @@ app.use((request, response) => {
   response.sendStatus(404);
 });
 
-// app.use((error, request, response, next) => {
-//   if (error.message === 'Bad email or password') {
-//     response
-//       .set('Content-Type', 'text/plain')
-//       .status(400)
-//       .send('Bad email or password');
-//     return;
-//   }
-// });
-
 app.use((error, request, response, next) => {
   if (error.output && error.output.statusCode) {
     response
