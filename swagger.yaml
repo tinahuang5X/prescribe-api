@@ -5,7 +5,7 @@ info:
 
 host: localhost:3000/#/
 
-basePath: /api/v1
+basePath: /routes
 
 schemes:
 

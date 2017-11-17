@@ -1,10 +1,15 @@
 const knex = require('../knex');
+//const bcrypt = require('bcryptjs');
+//const jwt = require('jsonwebtoken');
 
-const bcrypt = require('bcryptjs');
+class DoctorsController {
+  constructor({ doctorTable }) {
+    this._doctor = knex(doctorTable);
+    this._bindMethods(['getAll', 'getOne', 'create', 'patch', 'delete']);
+  }
 
-class doctorsController {
   getAll(req, res, next) {
-    knex('Doctor')
+    this._doctor
       .orderBy('lastName')
       .then(doctors => {
         //console.log('to see the drugs', drugs);
@@ -14,14 +19,13 @@ class doctorsController {
         next(err);
       });
   }
-
   getOne(req, res, next) {
     let id = req.params.id;
     if (id <= 0 || id >= 1000 || isNaN(id)) {
       res.set('Content-Type', 'text/plain');
       res.status(404).send('Not Found');
     } else {
-      knex('Doctor')
+      this._doctor
         .where('id', req.params.id)
         .first()
         .then(doctor => {
@@ -52,7 +56,7 @@ class doctorsController {
       bcrypt
         .hash(req.body.password, 12)
         .then(hashedPassword => {
-          return knex('Doctor').insert(
+          return this._doctor.insert(
             {
               firstName: req.body.firstName,
               lastName: req.body.lastName,
@@ -84,7 +88,7 @@ class doctorsController {
       res.set('Content-Type', 'text/plain');
       res.status(404).send('Not Found');
     } else {
-      knex('Doctor')
+      this._doctor
         .where('id', req.params.id)
         .first()
         // .then(drug => {
@@ -92,7 +96,7 @@ class doctorsController {
         //     return next();
         //   }
         .then(drug => {
-          return knex('Doctor')
+          return this._doctor
             .update(
               {
                 firstName: req.body.firstName,
@@ -120,7 +124,7 @@ class doctorsController {
       res.status(404).send('Not Found');
     } else {
       let doctor;
-      knex('Doctor')
+      this._doctor
         .where('id', req.params.id)
         .first()
         .then(row => {
@@ -130,7 +134,7 @@ class doctorsController {
 
           doctor = row;
 
-          return knex('Doctor').del().where('id', req.params.id);
+          return this._doctor.del().where('id', req.params.id);
         })
         .then(() => {
           delete doctor.id;
@@ -141,6 +145,11 @@ class doctorsController {
         });
     }
   }
+  _bindMethods(methodNames) {
+    methodNames.forEach(methodName => {
+      this[methodName] = this[methodName].bind(this);
+    });
+  }
 }
 
-module.exports = doctorsController;
+module.exports = DoctorsController;

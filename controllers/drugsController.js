@@ -5,6 +5,11 @@ const knex = require('../knex');
 const jwt = require('jsonwebtoken');
 
 class drugsController {
+  constructor({ drugTable }) {
+    this._drug = knex(drugTable);
+    this._bindMethods([]);
+  }
+
   getAll(req, res, next) {
     //try {
     let storedToken = req.headers.authorization;

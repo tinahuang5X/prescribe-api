@@ -4,7 +4,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 router.use(bodyParser.json());
 
-const doctorsController = require('../controllers/doctorsController');
+const doctorsController = require('./doctorsController');
 
 router.get('/doctors', doctorsController.getAll);
 router.get('/doctors/:id', doctorsController.getOne);
