@@ -25,7 +25,7 @@
   },
   "scripts": {
     "knex": "knex",
-    "start": "nodemon server.js",
+    "start": "node",
     "test": "mocha"
   },
   "repository": {

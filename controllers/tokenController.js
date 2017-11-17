@@ -4,7 +4,12 @@ const bcrypt = require('bcryptjs');
 const env = require('./../env');
 const jwt = require('jsonwebtoken');
 
-class tokenController {
+class TokenController {
+  constructor({ doctorTable }) {
+    this._doctor = knex(doctorTable);
+    this._bindMethods(['create', 'delete']);
+  }
+
   create(req, res) {
     if (!req.body.email) {
       res.set('Content-Type', 'text/plain');
@@ -21,7 +26,7 @@ class tokenController {
     //   .hash(req.body.password, 12)
     //   .then(hashedPassword => {
     //console.log(hashedPassword);
-    return knex('Doctor')
+    return this._doctor
       .where('email', req.body.email)
       .then(record => {
         return bcrypt
@@ -62,5 +67,10 @@ class tokenController {
   delete(req, res) {
     res.clearCookie('token').json(true);
   }
+  _bindMethods(methodNames) {
+    methodNames.forEach(methodName => {
+      this[methodName] = this[methodName].bind(this);
+    });
+  }
 }
-module.exports = tokenController;
+module.exports = TokenController;

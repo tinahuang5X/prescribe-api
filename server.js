@@ -40,10 +40,11 @@ app.use(express.static(path.join('public')));
 // });
 
 const drugs = require('./routes/drugs');
-//const patients = require('./routes/patients');
+//const drugs = require('./instances/drugsRouter');
 const token = require('./routes/token');
-//const doctors = require('./routes/doctors');
-const doctors = require('./instances/doctorsRouter');
+//const token = require('./instances/tokenRouter');
+const doctors = require('./routes/doctors');
+//const doctors = require('./instances/doctorsRouter');
 
 app.use(drugs);
 //app.use(patients);

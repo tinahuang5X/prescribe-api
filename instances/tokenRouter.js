@@ -4,7 +4,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 router.use(bodyParser.json());
 
-const tokenController = require('../controllers/tokenController');
+const tokenController = require('./tokenController');
 
 router.post('/token', tokenController.create);
 

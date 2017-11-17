@@ -4,10 +4,10 @@
 const knex = require('../knex');
 const jwt = require('jsonwebtoken');
 
-class drugsController {
+class DrugsController {
   constructor({ drugTable }) {
     this._drug = knex(drugTable);
-    this._bindMethods([]);
+    this._bindMethods(['getAll', 'getOne', 'create', 'patch', 'delete']);
   }
 
   getAll(req, res, next) {
@@ -22,7 +22,7 @@ class drugsController {
       res.status(401).send('Unauthorized');
       return;
     } else {
-      knex('Drug')
+      this._drug
         .where('doctorId', theDoctorId)
         //.first()
         .then(drugs => {
@@ -57,7 +57,7 @@ class drugsController {
         res.set('Content-Type', 'text/plain');
         res.status(404).send('Not Found');
       } else {
-        knex('Drug')
+        this._drug
           .where('doctorId', theDoctorId)
           .first()
           .then(drug => {
@@ -93,7 +93,7 @@ class drugsController {
         res.set('Content-Type', 'text/plain');
         res.status(400).send('Indications must not be blank');
       } else {
-        knex('Drug')
+        this._drug
           .insert(
             {
               doctorId: req.params.doctorId,
@@ -121,7 +121,7 @@ class drugsController {
       res.set('Content-Type', 'text/plain');
       res.status(404).send('Not Found');
     } else {
-      knex('Drug')
+      this._drug
         .where('id', req.params.id)
         .first()
         // .then(drug => {
@@ -129,7 +129,7 @@ class drugsController {
         //     return next();
         //   }
         .then(drug => {
-          return knex('Drug')
+          return this._drug
             .update(
               {
                 doctorId: req.params.doctorId,
@@ -156,7 +156,7 @@ class drugsController {
       res.status(404).send('Not Found');
     } else {
       let drug;
-      knex('Drug')
+      this._drug
         .where('id', req.params.id)
         .first()
         .then(row => {
@@ -166,7 +166,7 @@ class drugsController {
 
           drug = row;
 
-          return knex('Drug').del().where('id', req.params.id);
+          return this._drug.del().where('id', req.params.id);
         })
         .then(() => {
           delete drug.id;
@@ -177,6 +177,11 @@ class drugsController {
         });
     }
   }
+  _bindMethods(methodNames) {
+    methodNames.forEach(methodName => {
+      this[methodName] = this[methodName].bind(this);
+    });
+  }
 }
 
-module.exports = drugsController;
+module.exports = DrugsController;
