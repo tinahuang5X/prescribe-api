@@ -45,11 +45,13 @@ const token = require('./routes/token');
 //const token = require('./instances/tokenRouter');
 const doctors = require('./routes/doctors');
 //const doctors = require('./instances/doctorsRouter');
+const patients = require('./routes/patients');
 
 app.use(drugs);
 //app.use(patients);
 app.use(token);
 app.use(doctors);
+app.use(patients);
 
 app.use((request, response) => {
   response.sendStatus(404);
