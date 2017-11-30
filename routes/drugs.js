@@ -60,6 +60,7 @@ router.get('/doctors/:doctorId/drugs/:id', (req, res, next) => {
     } else {
       knex('Drug')
         .where('doctorId', theDoctorId)
+        .where('id', req.params.id)
         .first()
         .then(drug => {
           if (!drug) {

@@ -3,6 +3,8 @@ exports.up = function(knex) {
     table.increments('id').primary();
     table.string('name').notNullable().defaultTo('');
     table.string('dob').notNullable().defaultTo('');
+    table.string('phone').notNullable().defaultTo('');
+    table.string('address').notNullable().defaultTo('');
     table.integer('doctorId').unsigned().notNullable();
     table.foreign('doctorId').references('Doctor.id').onDelete('CASCADE');
 

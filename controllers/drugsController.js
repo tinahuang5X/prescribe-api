@@ -59,6 +59,7 @@ class DrugsController {
       } else {
         this._drug
           .where('doctorId', theDoctorId)
+          .where('id', req.params.id)
           .first()
           .then(drug => {
             if (!drug) {

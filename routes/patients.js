@@ -60,6 +60,7 @@ router.get('/doctors/:doctorId/patients/:id', (req, res, next) => {
     } else {
       knex('Patient')
         .where('doctorId', theDoctorId)
+        .where('id', req.params.id)
         .first()
         .then(patient => {
           if (!patient) {
@@ -86,23 +87,27 @@ router.post('/doctors/:doctorId/patients', (req, res, next) => {
     res.set('Content-Type', 'text/plain');
     res.status(401).send('Unauthorized');
   } else {
-    if (!req.body.generic) {
+    if (!req.body.name) {
       res.set('Content-Type', 'text/plain');
-      res.status(400).send('Generic must not be blank');
-    } else if (!req.body.brand) {
+      res.status(400).send('Name must not be blank');
+    } else if (!req.body.dob) {
       res.set('Content-Type', 'text/plain');
-      res.status(400).send('Brand must not be blank');
-    } else if (!req.body.indications) {
+      res.status(400).send('Date of birth must not be blank');
+    } else if (!req.body.phone) {
       res.set('Content-Type', 'text/plain');
-      res.status(400).send('Indications must not be blank');
+      res.status(400).send('Phone must not be blank');
+    } else if (!req.body.address) {
+      res.set('Content-Type', 'text/plain');
+      res.status(400).send('Address must not be blank');
     } else {
       knex('Patient')
         .insert(
           {
             doctorId: req.params.doctorId,
-            generic: req.body.generic,
-            brand: req.body.brand,
-            indications: req.body.indications
+            name: req.body.name,
+            dob: req.body.dob,
+            phone: req.body.phone,
+            address: req.body.address
           },
           '*'
         )
@@ -121,6 +126,7 @@ router.post('/doctors/:doctorId/patients', (req, res, next) => {
 
 router.patch('/patients/:id', (req, res, next) => {
   let id = req.params.id;
+
   if (id <= 0 || id >= 1000 || isNaN(id)) {
     res.set('Content-Type', 'text/plain');
     res.status(404).send('Not Found');
@@ -137,9 +143,10 @@ router.patch('/patients/:id', (req, res, next) => {
           .update(
             {
               doctorId: req.params.doctorId,
-              generic: req.body.generic,
-              brand: req.body.brand,
-              indications: req.body.indications
+              name: req.body.name,
+              dob: req.body.dob,
+              phone: req.body.phone,
+              address: req.body.address
             },
             '*'
           )
