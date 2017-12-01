@@ -7,9 +7,9 @@ router.use(bodyParser.json());
 const doctorsController = require('./doctorsController');
 
 router.get('/doctors', doctorsController.getAll);
-router.get('/doctors/:id', doctorsController.getOne);
+router.get('/doctors/:id(\\d+)', doctorsController.getOne);
 router.post('/doctors', doctorsController.create);
-router.patch('/doctors/:id', doctorsController.patch);
-router.delete('/doctors/:id', doctorsController.delete);
+router.patch('/doctors/:id(\\d+)', doctorsController.patch);
+router.delete('/doctors/:id(\\d+)', doctorsController.delete);
 
 module.exports = router;

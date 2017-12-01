@@ -6,10 +6,10 @@ router.use(bodyParser.json());
 
 const drugsController = require('./drugsController');
 
-router.get('/doctors/:doctorId/drugs', drugsController.getAll);
-router.get('/doctors/:doctorId/drugs/:id', drugsController.getOne);
-router.post('/doctors/:doctorId/drugs', drugsController.create);
-router.patch('/drugs/:id', drugsController.patch);
-router.delete('/drugs/:id', drugsController.delete);
+router.get('/doctors/:doctorId(\\d+)/drugs', drugsController.getAll);
+router.get('/doctors/:doctorId(\\d+)/drugs/:id(\\d+)', drugsController.getOne);
+router.post('/doctors/:doctorId(\\d+)/drugs', drugsController.create);
+router.patch('/drugs/:id(\\d+)', drugsController.patch);
+router.delete('/drugs/:id(\\d+)', drugsController.delete);
 
 module.exports = router;
