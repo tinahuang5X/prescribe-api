@@ -9,21 +9,21 @@ exports.seed = function(knex) {
         {
           id: 1,
           doctorId: 1,
-          generic: 'Atorvastatin',
+          generic: 'atorvastatin',
           brand: 'Liptor',
           indications: 'lower cholesterol'
         },
         {
           id: 2,
           doctorId: 1,
-          generic: 'Levothyroxine',
+          generic: 'levothyroxine',
           brand: 'Synthroid',
           indications: 'treat hypothyroidism'
         },
         {
           id: 3,
           doctorId: 1,
-          generic: 'Glucophage',
+          generic: 'metformin',
           brand: 'Glucophage',
           indications: 'treat type 2 diabetes'
         },

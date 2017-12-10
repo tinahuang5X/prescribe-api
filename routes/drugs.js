@@ -9,26 +9,32 @@ router.get('/doctors/:doctorId(\\d+)/drugs', (req, res, next) => {
   let decodedToken = jwt.decode(storedToken);
   //console.log(storedToken, decodedToken);
   let theDoctorId = decodedToken.id;
-  //console.log(theDoctorId);
-  if (!storedToken) {
+  //console.log(theDoctorId, req.param.doctorId);
+  if (!storedToken || theDoctorId !== req.params.doctorId) {
     res.set('Content-Type', 'text/plain');
     res.status(401).send('Unauthorized');
     return;
   } else {
-    knex('Drug')
-      .where('doctorId', theDoctorId)
-      .first()
-      .then(drugs => {
-        if (!drugs) {
-          res.set('Content-Type', 'text/plain');
-          res.status(404).send('Drug Not Found');
-        }
-        //console.log(drugs);
-        res.json(drugs);
-      })
-      .catch(err => {
-        next(err);
-      });
+    let id = req.params.doctorId;
+    if (id <= 0 || id >= 1000 || isNaN(id)) {
+      res.set('Content-Type', 'text/plain');
+      res.status(404).send('Not Found');
+    } else {
+      knex('Drug')
+        .where('doctorId', theDoctorId)
+        .first()
+        .then(drugs => {
+          if (!drugs) {
+            res.set('Content-Type', 'text/plain');
+            res.status(404).send('Drug Not Found');
+          }
+          //console.log(drugs);
+          res.json(drugs);
+        })
+        .catch(err => {
+          next(err);
+        });
+    }
   }
 });
 
@@ -37,7 +43,7 @@ router.get('/doctors/:doctorId(\\d+)/drugs/:id(\\d+)', (req, res, next) => {
   let decodedToken = jwt.decode(storedToken);
   let theDoctorId = decodedToken.id;
   //console.log(storedToken);
-  if (!storedToken) {
+  if (!storedToken || theDoctorId !== req.params.doctorId) {
     res.set('Content-Type', 'text/plain');
     res.status(401).send('Unauthorized');
   } else {
