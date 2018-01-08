@@ -9,8 +9,8 @@ router.get('/doctors/:doctorId(\\d+)/drugs', (req, res, next) => {
   let decodedToken = jwt.decode(storedToken);
   //console.log(storedToken, decodedToken);
   let theDoctorId = decodedToken.id;
-  //console.log(theDoctorId, req.param.doctorId);
-  if (!storedToken || theDoctorId !== req.params.doctorId) {
+  //console.log(theDoctorId, parseInt(req.params.doctorId));
+  if (!storedToken) {
     res.set('Content-Type', 'text/plain');
     res.status(401).send('Unauthorized');
     return;
@@ -22,7 +22,7 @@ router.get('/doctors/:doctorId(\\d+)/drugs', (req, res, next) => {
     } else {
       knex('Drug')
         .where('doctorId', theDoctorId)
-        .first()
+        // .first()
         .then(drugs => {
           if (!drugs) {
             res.set('Content-Type', 'text/plain');
@@ -37,6 +37,18 @@ router.get('/doctors/:doctorId(\\d+)/drugs', (req, res, next) => {
     }
   }
 });
+
+// router.get('/doctors/:doctorId/drugs', (req, res, next) => {
+//   knex('Drug')
+//     .orderBy('generic')
+//     .then(drugs => {
+//       //console.log('to see the drugs', drugs);
+//       res.json(drugs);
+//     })
+//     .catch(err => {
+//       next(err);
+//     });
+// });
 
 router.get('/doctors/:doctorId(\\d+)/drugs/:id(\\d+)', (req, res, next) => {
   let storedToken = req.headers.authorization;

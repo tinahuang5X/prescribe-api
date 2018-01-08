@@ -11,7 +11,7 @@ exports.seed = function(knex) {
           doctorId: 1,
           name: 'Lisa Chang',
           dob: '1/1/1987',
-          phone: '123-4567',
+          phone: '415-123-4567',
           address: '123 Main St. SF, CA 94102'
         },
         {
@@ -19,7 +19,7 @@ exports.seed = function(knex) {
           doctorId: 1,
           name: 'Taylor Swift',
           dob: '12/13/1989',
-          phone: '888-4438',
+          phone: '415-888-4438',
           address: '80 Heaven Rd. Miami, FL 39555'
         },
         {
@@ -27,7 +27,7 @@ exports.seed = function(knex) {
           doctorId: 1,
           name: 'Justin Bieber',
           dob: '3/1/1994',
-          phone: '333-4455',
+          phone: '510-333-4455',
           address: '100 Hollywood Dr. LA, CA 93103'
         },
         {
@@ -35,7 +35,7 @@ exports.seed = function(knex) {
           doctorId: 1,
           name: 'Emma Stone',
           dob: '11/6/1988',
-          phone: '222-4444',
+          phone: '925-222-4444',
           address: '48 La La Lane, LA, CA 93105'
         },
         {
@@ -43,7 +43,7 @@ exports.seed = function(knex) {
           doctorId: 1,
           name: 'Chris Evans',
           dob: '6/13/1981',
-          phone: '987-6543',
+          phone: '408-987-6543',
           address: '210 Captain Rd. San Diego, CA 93401'
         }
       ]);

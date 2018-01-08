@@ -4,7 +4,7 @@ const router = express.Router();
 const knex = require('../knex');
 const jwt = require('jsonwebtoken');
 
-router.get('/doctors/:doctorId/patients', (req, res, next) => {
+router.get('/doctors/:doctorId(\\d+)/patients', (req, res, next) => {
   let storedToken = req.headers.authorization;
   let decodedToken = jwt.decode(storedToken);
   //console.log(storedToken, decodedToken);
@@ -44,7 +44,7 @@ router.get('/doctors/:doctorId/patients', (req, res, next) => {
 //     });
 // });
 
-router.get('/doctors/:doctorId/patients/:id', (req, res, next) => {
+router.get('/doctors/:doctorId(\\d+)/patients/:id(\\d+)', (req, res, next) => {
   let storedToken = req.headers.authorization;
   let decodedToken = jwt.decode(storedToken);
   let theDoctorId = decodedToken.id;
@@ -77,7 +77,7 @@ router.get('/doctors/:doctorId/patients/:id', (req, res, next) => {
   }
 });
 
-router.post('/doctors/:doctorId/patients', (req, res, next) => {
+router.post('/doctors/:doctorId(\\d+)/patients', (req, res, next) => {
   //console.log('hi');
   let storedToken = req.headers.authorization;
   let decodedToken = jwt.decode(storedToken);
@@ -124,7 +124,7 @@ router.post('/doctors/:doctorId/patients', (req, res, next) => {
   }
 });
 
-router.patch('/patients/:id', (req, res, next) => {
+router.patch('/patients/:id(\\d+)', (req, res, next) => {
   let id = req.params.id;
 
   if (id <= 0 || id >= 1000 || isNaN(id)) {
@@ -161,7 +161,7 @@ router.patch('/patients/:id', (req, res, next) => {
   }
 });
 
-router.delete('/patients/:id', (req, res, next) => {
+router.delete('/patients/:id(\\d+)', (req, res, next) => {
   let id = req.params.id;
   if (id <= 0 || id >= 1000 || isNaN(id)) {
     res.set('Content-Type', 'text/plain');
