@@ -1,0 +1,20 @@
+branch-defaults:
+  phase-2:
+    environment: prescribe-app17-env
+environment-defaults:
+  prescribe-app17-env:
+    branch: null
+    repository: null
+global:
+  application_name: Prescribe-App17
+  default_ec2_keyname: prescribe-app17-dev
+  default_platform: arn:aws:elasticbeanstalk:us-west-1::platform/Node.js running on
+    64bit Amazon Linux/4.4.0
+  default_region: us-west-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  sc: git
+  workspace_type: Application
