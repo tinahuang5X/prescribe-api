@@ -16,9 +16,11 @@
     "hoek": "^5.0.3",
     "jsonwebtoken": "^8.2.1",
     "knex": "^0.13.0",
+    "lodash": "^4.17.11",
     "mocha": "^4.1.0",
     "morgan": "^1.9.0",
     "pg": "^7.4.1",
+    "randomatic": "^3.1.1",
     "supertest": "^3.0.0"
   },
   "devDependencies": {
